@@ -10,5 +10,8 @@
     "mirai"
   ],
   "author": "RedBeanN",
-  "license": "AGPL-3.0-or-later"
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
 }
