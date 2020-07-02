@@ -5,6 +5,14 @@ const path = require('path');
 const { program } = require('commander');
 
 const checkMirai = require('./src/checkMirai');
+const runMirai = require('./src/runMirai');
+
+const configTemplate = [
+  `# 在下面添加启动时要输入的指令`,
+  `# 在 console 启动完成后会自动输入指令`,
+  `# 如 login 123456789 passwd`,
+  `# 以#开头的行会被忽略`,
+].join('\n');
 
 program.version(version);
 
@@ -21,7 +29,9 @@ program
   console.log(`Root dir: ${rootDir}`);
   if (fs.existsSync((rootDir))) console.warn(`[WARN] 工作目录已存在，将进行非强制更新`);
   else fs.mkdirSync(rootDir, { recursive: true });
+  fs.writeFileSync(path.resolve(rootDir, `config.txt`), configTemplate);
   await checkMirai(rootDir);
+  console.log(`初始化完成`)
 });
 
 program
@@ -32,7 +42,18 @@ program
 .action(async (cmd) => {
   const cwd = path.resolve(process.cwd());
   if (!cmd.noupdate) await checkMirai(cwd, cmd.forceupdate);
-  const files = fs.readdirSync(cwd).filter(i => i.includes('wrapper'));
+  const files = fs.readdirSync(cwd).filter(i => i.includes('console-wrapper'));
+  if (files.length === 0) return console.error(`当前目录下未发现mirai-console-wrapper，使用 nmok create [dir] 来创建一个新项目`);
+  if (files.length !== 1) return console.error(`当前目录下存在多个mirai-console-wrapper，请手动删除旧版本`);
+  const config = path.resolve(cwd, `config.txt`);
+  if (!fs.existsSync(config)) {
+    fs.writeFileSync(config, configTemplate);
+  }
+  const cmds = fs.readFileSync(config)
+                 .toString()
+                 .split('\n')
+                 .filter(i => !i.startsWith('#'));
+  runMirai(files[0], cmds);
 });
 
 program.parse(process.argv);
