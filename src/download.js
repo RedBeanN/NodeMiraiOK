@@ -1,17 +1,23 @@
 const fs = require('fs');
 const axios = require('axios');
 
-const download = (url, dist, method = 'GET') => new Promise((resolve, reject) => {
-  axios({
+const download = async (url, dist, method = 'GET') => {
+  return axios({
     method,
     url,
     responseType: 'stream',
   }).then(({ data }) => {
     const stream = fs.createWriteStream(dist);
-    data.pipe(stream)
-    .on('end', () => resolve(dist))
-    .on('error', (err) => reject(err));
+    return new Promise((resolve, reject) => {
+      data.pipe(stream);
+      data.on('end', () => {
+        resolve(dist);
+      });
+      data.on('error', (err) => {
+        reject(err);
+      });
+    });
   });
-});
+};
 
 module.exports = download;
