@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
-const download = require('./download');
 const releaseUrl = `http://api.redbean.tech:64724/MiraiPlugins/release`;
 
 const getPluginInfo = async (plugin) => {
@@ -49,6 +48,7 @@ const downloadPlugin = async (rootDir, info) => {
 };
 
 const checkPlugin = async (rootDir, plugin) => {
+  if (!fs.existsSync(rootDir)) fs.mkdirSync(rootDir, { recursive: true });
   const info = await getPluginInfo(plugin);
   if (!info) {
     return console.log(`找不到指定的插件`);
