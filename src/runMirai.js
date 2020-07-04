@@ -1,7 +1,7 @@
 const { spawn } = require('child_process');
 
-const runMirai = async (jar, cmds = []) => {
-  const mirai = spawn(`java`, [`-Dfile.encoding=UTF-8`, `-jar`, jar, `--update`, `KEEP`]);
+const runMirai = async (jar, javaPath = 'java', cmds = []) => {
+  const mirai = spawn(javaPath, [`-Dfile.encoding=UTF-8`, `-jar`, jar, `--update`, `KEEP`]);
   mirai.stdout.on(`data`, data => {
     data = data.toString().trim();
     console.log(data);

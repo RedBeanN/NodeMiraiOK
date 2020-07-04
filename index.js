@@ -43,7 +43,11 @@ program
 .description(`Run mirai-console`)
 .action(async (cmd) => {
   const cwd = path.resolve(process.cwd());
-  if (!cmd.noupdate) await checkMirai(cwd, cmd.forceupdate);
+  const javaPath = await checkJava(cwd);
+  if (!cmd.noupdate) {
+    console.log(`正在检查Mirai三件套更新...`);
+    await checkMirai(cwd, cmd.forceupdate);
+  }
   const files = fs.readdirSync(cwd).filter(i => i.includes('console-wrapper'));
   if (files.length === 0) return console.error(`当前目录下未发现mirai-console-wrapper，使用 nmok create [dir] 来创建一个新项目`);
   if (files.length !== 1) return console.error(`当前目录下存在多个mirai-console-wrapper，请手动删除旧版本`);
@@ -55,7 +59,7 @@ program
                  .toString()
                  .split('\n')
                  .filter(i => !i.startsWith('#'));
-  runMirai(files[0], cmds);
+  runMirai(files[0], javaPath, cmds);
 });
 
 program.parse(process.argv);
