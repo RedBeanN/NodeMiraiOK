@@ -6,6 +6,7 @@ const { program } = require('commander');
 
 const checkMirai = require('./src/checkMirai');
 const checkJava = require('./src/checkJava');
+const checkPlugin = require('./src/checkPlugin');
 const runMirai = require('./src/runMirai');
 
 const configTemplate = [
@@ -34,6 +35,7 @@ program
   fs.writeFileSync(path.resolve(rootDir, `config.txt`), configTemplate);
   await checkMirai(rootDir);
   console.log(`初始化完成\n使用以下命令启动Mirai\n\tcd ${dir}\n\tnmok run`);
+  console.log(`在${dir}目录下运行\n\tnmok add mirai-api-http\n即可安装httpapi插件`);
 });
 
 program
@@ -60,6 +62,12 @@ program
                  .split('\n')
                  .filter(i => !i.startsWith('#'));
   runMirai(files[0], javaPath, cmds);
+});
+
+program.command(`add [plugin]`)
+.description(`Add mirai console plugin`)
+.action((plugin) => {
+  checkPlugin(path.resolve(process.cwd(), 'plugins'), plugin);
 });
 
 program.parse(process.argv);
