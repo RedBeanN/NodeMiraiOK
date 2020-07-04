@@ -33,7 +33,7 @@ program
   await checkJava(rootDir);
   fs.writeFileSync(path.resolve(rootDir, `config.txt`), configTemplate);
   await checkMirai(rootDir);
-  console.log(`初始化完成`)
+  console.log(`初始化完成\n使用以下命令启动Mirai\n\tcd ${dir}\n\tnmok run`);
 });
 
 program

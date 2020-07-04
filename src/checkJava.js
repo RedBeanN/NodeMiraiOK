@@ -46,7 +46,6 @@ const getSysInfo = () => {
 
 const checkJava = async (rootDir = process.cwd()) => {
   try {
-    console.log(1);
     try {
       const v = await getJavaVersion();
       console.log(`JRE:${v.trim()}`)
