@@ -26,6 +26,20 @@ nmok run
 nmok init <-t>
 ```
 
+编辑 `index.js` 中的相关配置
+
+``` sh
+nmok run
+```
+
+现在在启动 `mirai-console` 后, `nmok` 还会自动运行 `index.js`, 可以使用
+
+``` sh
+nmok run --pure
+```
+
+只启动 `mirai-console` 而不运行 `index.js`
+
 ### 添加 `mirai-console` 插件
 
 ``` sh
