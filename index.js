@@ -9,7 +9,7 @@ const checkJava = require('./src/checkJava');
 const checkPlugin = require('./src/checkPlugin');
 const runMirai = require('./src/runMirai');
 
-const { initJS } = require(`./src/init`);
+const { initJS, initTS } = require(`./src/init`);
 
 const configTemplate = fs.readFileSync(path.resolve(__dirname, 'templates/config.txt'));
 
