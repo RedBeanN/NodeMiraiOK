@@ -8,6 +8,7 @@ const checkMirai = require('./src/checkMirai');
 const checkJava = require('./src/checkJava');
 const checkPlugin = require('./src/checkPlugin');
 const runMirai = require('./src/runMirai');
+const runProject = require('./src/runProject');
 
 const { initJS, initTS } = require(`./src/init`);
 
@@ -40,6 +41,7 @@ program
 .command(`run`)
 .option(`--noupdate`, `不升级 Mirai 三件套`)
 .option(`-F, --forceupdate`, `强制更新 Mirai 三件套`)
+.option(`-P, --pure`, `只运行 mirai-console 而不自动启动 index.js`)
 .description(`运行 NMOK 项目`)
 .action(async (cmd) => {
   const cwd = path.resolve(process.cwd());
@@ -59,7 +61,17 @@ program
                  .toString()
                  .split('\n')
                  .filter(i => !i.startsWith('#'));
-  runMirai(files[0], javaPath, cmds);
+  const mirai = await runMirai(files[0], javaPath, cmds);
+  if (!cmd.pure) {
+    const indexPath = path.resolve(cwd, `index.js`);
+    if (fs.existsSync(indexPath)) {
+      mirai.stdout.on(`data`, data => {
+        if (data.toString().includes(`Login successful`)) {
+          return runProject(indexPath);
+        }
+      });
+    }
+  }
 });
 
 program.command(`add [plugin]`)
