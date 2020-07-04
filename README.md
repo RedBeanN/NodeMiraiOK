@@ -4,6 +4,14 @@
 
 依赖: `NodeJS v10.12.0+`
 
+## 已经能做到
+
+- 自动下载和更新 [mirai](https://github.com/mamoe/mirai) 三件套
+- 自动配置 `Java` 环境
+- 自动登录
+- 一键安装 [mirai-console](https://github.com/mamoe/mirai-console) 插件(Beta)
+- 快速配置并随 `console` 运行 [node-mirai-sdk](https://github.com/RedBeanN/node-mirai) 或 [mirai-ts](https://github.com/YunYouJun/mirai-ts) 项目
+
 ## Usage
 
 ### 安装 nmok
@@ -12,7 +20,7 @@
 npm i -g node-mirai-ok
 ```
 
-### 创建和运行项目
+### 安装和运行`mirai-console`
 
 ``` sh
 nmok create my-qq-bot
