@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 
+const checkPlugin = require('./checkPlugin');
+
 const jsTemplate = fs.readFileSync(path.resolve(__dirname, '../templates/node-mirai-sdk.js'));
 const tsTemplate = fs.readFileSync(path.resolve(__dirname, '../templates/mirai-ts.js'));
 
@@ -38,6 +40,7 @@ const install = async pack => new Promise((resolve, reject) =>{
 });
 
 const initJS = async (rootDir) => {
+  await checkPlugin(rootDir, `mirai-api-http`);
   const packagePath = path.resolve(rootDir, `package.json`);
   if (!fs.existsSync(packagePath)) {
     console.log(`未发现 npm 项目，执行 npm init`);
@@ -49,10 +52,11 @@ const initJS = async (rootDir) => {
     console.log(`正在创建模板文件`);
     fs.writeFileSync(path.resolve(rootDir, `index.js`), jsTemplate);
   }
+  console.log(`执行\n\tnmok run\n来运行 mirai 项目`);
 };
 
 const initTS = async (rootDir) => {
-  await add
+  await checkPlugin(path.resolve(rootDir, `plugins`), `mirai-api-http`);
   const packagePath = path.resolve(rootDir, `package.json`);
   if (!fs.existsSync(packagePath)) {
     console.log(`未发现 npm 项目，执行 npm init`);
