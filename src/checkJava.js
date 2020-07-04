@@ -1,13 +1,18 @@
 const os = require('os');
+const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+const unrar = require('node-unrar-js');
 const { spawn } = require('child_process');
 const download = require('./download');
 
-const getJavaVersion = async () => {
+const getJavaVersion = async (dir = '') => {
   // DEBUG
-  throw '';
-  const java = spawn(`java`, [`-version`]);
+  // throw '';
+  // if (!dir.length) throw '';
+  if (dir.length) javaPath = path.resolve(dir, 'java');
+  else javaPath = `java`;
+  const java = spawn(javaPath, [`-version`]);
   return new Promise((resolve, reject) => {
     java.on('error', reject);
     java.stdout.on(`data`, data => {
@@ -41,9 +46,17 @@ const getSysInfo = () => {
 
 const checkJava = async (rootDir = process.cwd()) => {
   try {
-    const v = await getJavaVersion();
-    console.log(`JRE:${v.trim()}`)
-    return `java`;
+    console.log(1);
+    try {
+      const v = await getJavaVersion();
+      console.log(`JRE:${v.trim()}`)
+      return `java`;
+    } catch (e) {
+      console.log(path.resolve(rootDir, 'jre/bin/'));
+      const v = await getJavaVersion(path.resolve(rootDir, 'jre/bin/'));
+      console.log(`Local JRE:${v.trim()}`);
+      return path.resolve(rootDir, 'jre/bin/java');
+    }
   } catch (e) {
     console.log(`未发现JRE，准备下载...`);
     const sysInfo = getSysInfo();
@@ -52,9 +65,22 @@ const checkJava = async (rootDir = process.cwd()) => {
       process.exit(0);
     });
     await download(javaUrl.data, path.resolve(rootDir, `jre-${sysInfo}.rar`));
-    // TODO: extract rar
+    const extractor = unrar.createExtractorFromFile(
+      path.resolve(rootDir, `jre-${sysInfo}.rar`),
+      rootDir
+    );
+    const files = extractor.getFileList()[1].fileHeaders.map(i => i.name);
+    // FIX: unrar 无法识别嵌套文件夹
+    files.forEach(file => {
+      const paths = file.split('/');
+      const dir = path.resolve(rootDir, paths.slice(0, paths.length - 1).join('/'));
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    })
+    extractor.extractAll();
+    fs.unlinkSync(path.resolve(rootDir, `jre-${sysInfo}.rar`));
+    return path.resolve(rootDir, `jre/bin/java`);
   }
 };
 
 module.exports = checkJava;
-checkJava();
+// checkJava().then(console.log);
