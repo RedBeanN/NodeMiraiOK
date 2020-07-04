@@ -40,7 +40,7 @@ const install = async pack => new Promise((resolve, reject) =>{
 });
 
 const initJS = async (rootDir) => {
-  await checkPlugin(rootDir, `mirai-api-http`);
+  await checkPlugin(path.resolve(rootDir, `plugins`), `mirai-api-http`);
   const packagePath = path.resolve(rootDir, `package.json`);
   if (!fs.existsSync(packagePath)) {
     console.log(`未发现 npm 项目，执行 npm init`);
@@ -49,10 +49,10 @@ const initJS = async (rootDir) => {
   console.log(`正在执行 npm i -S node-mirai-sdk`);
   await install(`node-mirai-sdk`);
   if (!fs.existsSync(path.resolve(rootDir, `index.js`))) {
-    console.log(`正在创建模板文件`);
+    console.log(`创建模板文件`);
     fs.writeFileSync(path.resolve(rootDir, `index.js`), jsTemplate);
   }
-  console.log(`执行\n\tnmok run\n来运行 mirai 项目`);
+  console.log(`请先配置plugins/MiraiAPIHTTP/setting.yml文件，编辑index.js中的配置，然后执行\n\tnmok run\n来运行 mirai 项目`);
 };
 
 const initTS = async (rootDir) => {
@@ -65,9 +65,10 @@ const initTS = async (rootDir) => {
   console.log(`正在执行 npm i -S mirai-ts`);
   await install(`mirai-ts`);
   if (!fs.existsSync(path.resolve(rootDir, `index.js`))) {
-    console.log(`正在创建模板文件`);
+    console.log(`创建模板文件`);
     fs.writeFileSync(path.resolve(rootDir, `index.js`), tsTemplate);
   }
+  console.log(`请先配置plugins/MiraiAPIHTTP/setting.yml文件，编辑index.js中的配置，然后执行\n\tnmok run\n来运行 mirai 项目`);
 };
 
 module.exports = {
