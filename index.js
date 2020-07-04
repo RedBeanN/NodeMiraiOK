@@ -20,7 +20,7 @@ program.version(version);
 
 program
 .command(`create [dir]`)
-.description('Create a Node Mirai One Key project')
+.description('创建一个 Node Mirai One Key 项目')
 .action(async (dir, cmd) => {
   if (!dir) {
     dir = `NodeMiraiOK`;
@@ -40,9 +40,9 @@ program
 
 program
 .command(`run`)
-.option(`--noupdate`, `Don't update mirai`)
-.option(`-F, --forceupdate`, `Force update mirai`)
-.description(`Run mirai-console`)
+.option(`--noupdate`, `不升级 Mirai 三件套`)
+.option(`-F, --forceupdate`, `强制更新 Mirai 三件套`)
+.description(`运行 NMOK 项目`)
 .action(async (cmd) => {
   const cwd = path.resolve(process.cwd());
   const javaPath = await checkJava(cwd);
@@ -65,7 +65,7 @@ program
 });
 
 program.command(`add [plugin]`)
-.description(`Add mirai console plugin`)
+.description(`为 mirai-console 添加插件`)
 .action((plugin) => {
   checkPlugin(path.resolve(process.cwd(), 'plugins'), plugin);
 });
