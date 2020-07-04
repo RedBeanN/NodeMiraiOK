@@ -64,9 +64,12 @@ program
   const mirai = await runMirai(files[0], javaPath, cmds);
   if (!cmd.pure) {
     const indexPath = path.resolve(cwd, `index.js`);
+    let launched = false;
     if (fs.existsSync(indexPath)) {
       mirai.stdout.on(`data`, data => {
+        if (launched) return;
         if (data.toString().includes(`Login successful`)) {
+          launched = true;
           return runProject(indexPath);
         }
       });
