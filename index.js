@@ -34,6 +34,7 @@ program
   fs.writeFileSync(path.resolve(rootDir, `config.txt`), configTemplate);
   await checkMirai(rootDir);
   console.log(`初始化完成\n使用以下命令启动Mirai\n\tcd ${dir}\n\tnmok run`);
+  console.log(`编辑 ${dir}/config.txt 来配置自动登录`);
   console.log(`在${dir}目录下运行\n\tnmok add mirai-api-http\n即可安装httpapi插件`);
 });
 
