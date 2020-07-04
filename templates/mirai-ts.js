@@ -1,4 +1,7 @@
-const Mirai = require('mirai-ts');
+const MiraiObj = require('mirai-ts');
+
+// 处理 mirai-ts 的入口问题
+const Mirai = MiraiObj.default || MiraiObj;
 
 const mahConfig = {
   host: '你的 IP 地址' || '127.0.0.1',
@@ -24,7 +27,7 @@ console.log("send command help");
 // 注意这里使用 await，所以你需要在外围函数加上 async
 // 这里只是简单示例，所以没有放在函数里。
 // const data = await mirai.api.command.send("help", []);
-console.log("帮助信息:" + data);
+// console.log("帮助信息:" + data);
 
 // 处理各种事件类型
 // 事件订阅说明（名称均与 mirai-api-http 中时间名一致）
