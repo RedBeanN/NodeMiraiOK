@@ -14,6 +14,10 @@ const runMirai = async (jar, javaPath = 'java', cmds = []) => {
   mirai.stderr.on(`data`, data => {
     console.error(`[Error]`, data.toString())
   });
+  mirai.on('error', (...args) => {
+    console.error(`无法启动 mirai-console. 错误信息:`, ...args);
+    process.exit(0);
+  });
   return mirai;
 };
 
