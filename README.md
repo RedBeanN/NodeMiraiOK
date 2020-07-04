@@ -31,3 +31,9 @@ nmok init <-t>
 ``` sh
 nmok add mirai-api-http
 ```
+
+### 查看帮助
+
+``` sh
+nmok -h
+```

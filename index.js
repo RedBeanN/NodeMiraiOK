@@ -18,7 +18,7 @@ program.name('nmok');
 
 program
 .command(`create [dir]`)
-.description('创建一个 Node Mirai One Key 项目')
+.description('创建一个 NodeMiraiOK 项目')
 .action(async (dir, cmd) => {
   if (!dir) {
     dir = `NodeMiraiOK`;
