@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 
-const jsTemplate = fs.readFileSync(path.resolve(__dirname, '../templates/node-mirai-sdk.template.js'));
-const tsTemplate = fs.readFileSync(path.resolve(__dirname, '../templates/mirai-ts.template.js'));
+const jsTemplate = fs.readFileSync(path.resolve(__dirname, '../templates/node-mirai-sdk.js'));
+const tsTemplate = fs.readFileSync(path.resolve(__dirname, '../templates/mirai-ts.js'));
 
 const npmCmd = process.platform.includes(`win`) ? `npm.cmd` : `npm`;
 
@@ -52,6 +52,7 @@ const initJS = async (rootDir) => {
 };
 
 const initTS = async (rootDir) => {
+  await add
   const packagePath = path.resolve(rootDir, `package.json`);
   if (!fs.existsSync(packagePath)) {
     console.log(`未发现 npm 项目，执行 npm init`);
