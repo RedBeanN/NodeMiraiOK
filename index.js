@@ -5,6 +5,7 @@ const path = require('path');
 const { program } = require('commander');
 
 const checkMirai = require('./src/checkMirai');
+const checkJava = require('./src/checkJava');
 const runMirai = require('./src/runMirai');
 
 const configTemplate = [
@@ -29,6 +30,7 @@ program
   console.log(`Root dir: ${rootDir}`);
   if (fs.existsSync((rootDir))) console.warn(`[WARN] 工作目录已存在，将进行非强制更新`);
   else fs.mkdirSync(rootDir, { recursive: true });
+  await checkJava(rootDir);
   fs.writeFileSync(path.resolve(rootDir, `config.txt`), configTemplate);
   await checkMirai(rootDir);
   console.log(`初始化完成`)
