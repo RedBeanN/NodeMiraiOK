@@ -9,14 +9,12 @@ const checkJava = require('./src/checkJava');
 const checkPlugin = require('./src/checkPlugin');
 const runMirai = require('./src/runMirai');
 
-const configTemplate = [
-  `# 在下面添加启动时要输入的指令`,
-  `# 在 console 启动完成后会自动输入指令`,
-  `# 如 login 123456789 passwd`,
-  `# 以#开头的行会被忽略`,
-].join('\n');
+const { initJS } = require(`./src/init`);
+
+const configTemplate = fs.readFileSync(path.resolve(__dirname, 'templates/config.txt'));
 
 program.version(version);
+program.name('nmok');
 
 program
 .command(`create [dir]`)
@@ -68,6 +66,14 @@ program.command(`add [plugin]`)
 .description(`为 mirai-console 添加插件`)
 .action((plugin) => {
   checkPlugin(path.resolve(process.cwd(), 'plugins'), plugin);
+});
+
+program.command(`init`)
+.description(`创建 node-mirai-sdk 或 mirai-ts 项目模板`)
+.option(`-t, --typescript`, `使用 mirai-ts`)
+.action((cmd) => {
+  if(cmd.typescript) initTS(process.cwd());
+  else initJS(process.cwd());
 });
 
 program.parse(process.argv);
