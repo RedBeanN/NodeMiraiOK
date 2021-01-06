@@ -15,7 +15,7 @@
   "author": "RedBeanN",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "commander": "^5.1.0",
     "node-unrar-js": "^0.8.1"
   }
